@@ -1,2 +1,2 @@
-# ChatGLM-6b-Finetuning
-ChatGLM-6b 微调
+
+baichuan-7B 微调

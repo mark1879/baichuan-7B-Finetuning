@@ -1,2 +1,2 @@
 
-baichuan-7B 微调
+ChatGLM-6B 微调

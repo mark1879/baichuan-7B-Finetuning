@@ -1,0 +1,9 @@
+{
+  "cpp_interview_train": {
+    "file_name": "cpp_interview_questions_train.json"
+  },
+
+  "cpp_interview_test": {
+    "file_name": "cpp_interview_questions_test.json"
+  }
+}

@@ -1,6 +1,6 @@
 
 ## 介绍
-本项目主要使用 **baichuan-7B** 的预训练模型进行微调，目标是训练出一个能够帮助开发者备战面试的大模型。目前收集了 517 条 C++ 面试相关的训练数据（数据来源：个人面试经验、互联网、GPT3.5等），会继续收集、清洗更多的训练数据，用以提升模型效果。也欢迎开源爱好者增加其它 IT 技术领域的面试数据集。
+本项目使用 **baichuan-7B** 的预训练模型进行微调，目标是训练出一个能够帮助开发者备战面试的大模型，目前收集了 1000+ 条 C++ 面试相关的训练数据（数据来源：个人面试经验、互联网、GPT3.5等），欢迎开源爱好者增加其它 IT 技术领域的面试数据集。
 
 
 ## 环境准备
@@ -21,12 +21,12 @@ git clone https://huggingface.co/baichuan-inc/baichuan-7B
 
 ##### 3. 安装 python 库
 ```sh
-pip3 install -r requirements.txt
+pip3 install -re requirements.txt
 ```
 
 ## 微调
-### 1. 准备数据
-`data` 目录下存储了训练数据: 467 条，测试数据: 50 条，也可自行准备数据，数据格式如下：
+#### 1. 训练数据
+`data` 目录下存储了训练数据、测试数据，也可自行准备数据。数据格式如下：
 ```json
 [
     {
@@ -37,12 +37,14 @@ pip3 install -r requirements.txt
 ]
 ```
 
-### 2. Lora 微调
-**直接在预训练模型上微调**
+#### 2. Lora 微调
+**（1）直接在预训练模型上监督微调**
 
-运行以下命令使用训练集对模型进行监督微调，微调后的模型保存在 `path_to_checkpoint` (可自行指定) 文件夹中。
+- CUDA_VISIBLE_DEVICES=0：表示单卡训练
+- --model_name_or_path：预训练模型路径
+- --dataset：训练数据集
+- --output_dir：微调后的模型保存路径
 
-- CUDA_VISIBLE_DEVICES=0，表示单卡训练
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
@@ -66,8 +68,11 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --lora_target W_pack
 ```
 
-**（2）评估模型**
-运行以下命令对模型进行测试，测试结果保存在 `path_to_eval_result` (可自行指定) 文件夹中。
+**（2）测试微调后的模型**
+
+- --model_name_or_path：预训练模型路径
+- --checkpoint_dir：微调模型路径
+- --output_dir：测试结果保存路径
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
@@ -83,13 +88,16 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
 ```
 
 **（3）与大模型对话**
+
+- --model_name_or_path：预训练模型路径
+- --checkpoint_dir：微调模型路径
+
 ```sh
 python src/cli_demo.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
-    --checkpoint_dir path_to_checkpoint \
-    --max_new_tokens 3000
+    --checkpoint_dir path_to_lora_checkpoint \
+    --max_new_tokens 2048
 ```
 
 ## Acknowledgement
-本项目代码是基于 [LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) 项目中的 LoRA 微调部分修改而来，在此表示感谢！
-
+本项目是基于 [LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) 项目中的 LoRA 微调部分修改而来，在此表示感谢！

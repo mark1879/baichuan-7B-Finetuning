@@ -21,7 +21,7 @@ git clone https://huggingface.co/baichuan-inc/baichuan-7B
 
 ##### 3. 安装 python 库
 ```sh
-pip3 install -re requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## 微调

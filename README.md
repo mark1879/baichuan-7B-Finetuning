@@ -25,7 +25,7 @@ pip3 install -r requirements.txt
 ```
 
 ## 微调
-#### 1. 准备数据
+### 1. 准备数据
 `data` 目录下存储了训练数据: 467 条，测试数据: 50 条，也可自行准备数据，数据格式如下：
 ```json
 [
@@ -37,17 +37,18 @@ pip3 install -r requirements.txt
 ]
 ```
 
-#### 2. Lora 微调
-**（1）直接在预训练模型上微调**
-> 也可在微调模型上继续微调，指定参数 `--checkpoint_dir path_to_checkpoint` 即可。
-> 
-- CUDA_VISIBLE_DEVICES=0，表示单卡训练
+### 2. Lora 微调
+**直接在预训练模型上微调**
 
+运行以下命令使用训练集对模型进行监督微调，微调后的模型保存在 `path_to_lora_checkpoint` (可自行指定) 文件夹中。
+
+- CUDA_VISIBLE_DEVICES=0，表示单卡训练
 
 ```sh
 CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
     --do_train \
+    --dataset_dir data \
     --dataset cpp_interview_train \
     --max_source_length 256 \
     --max_target_length 3000 \
@@ -57,7 +58,7 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --gradient_accumulation_steps 1 \
     --lr_scheduler_type cosine \
     --logging_steps 10 \
-    --save_steps 500 \
+    --save_steps 1000 \
     --learning_rate 5e-5 \
     --num_train_epochs 3.0 \
     --plot_loss \

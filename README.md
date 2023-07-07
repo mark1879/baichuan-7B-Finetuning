@@ -40,7 +40,7 @@ pip3 install -r requirements.txt
 ### 2. Lora 微调
 **直接在预训练模型上微调**
 
-运行以下命令使用训练集对模型进行监督微调，微调后的模型保存在 `path_to_lora_checkpoint` (可自行指定) 文件夹中。
+运行以下命令使用训练集对模型进行监督微调，微调后的模型保存在 `path_to_checkpoint` (可自行指定) 文件夹中。
 
 - CUDA_VISIBLE_DEVICES=0，表示单卡训练
 
@@ -52,7 +52,7 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --dataset cpp_interview_train \
     --max_source_length 256 \
     --max_target_length 3000 \
-    --output_dir path_to_lora_checkpoint \
+    --output_dir path_to_checkpoint \
     --overwrite_cache \
     --per_device_train_batch_size 1 \
     --gradient_accumulation_steps 1 \
@@ -67,16 +67,18 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
 ```
 
 **（2）评估模型**
+运行以下命令对模型进行测试，测试结果保存在 `path_to_eval_result` (可自行指定) 文件夹中。
+
 ```sh
-CUDA_VISIBLE_DEVICES=0 python src/train_sft.py \
+CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
     --do_eval \
     --dataset_dir data \
     --dataset cpp_interview_test \
-    --checkpoint_dir path_to_lora_checkpoint \
+    --checkpoint_dir path_to_checkpoint \
     --output_dir path_to_eval_result \
     --per_device_eval_batch_size 4 \
-    --max_samples 50 \
+    --max_samples 100 \
     --predict_with_generate
 ```
 
@@ -84,10 +86,10 @@ CUDA_VISIBLE_DEVICES=0 python src/train_sft.py \
 ```sh
 python src/cli_demo.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
-    --checkpoint_dir path_to_lora_checkpoint \
-    --max_new_tokens 2048
+    --checkpoint_dir path_to_checkpoint \
+    --max_new_tokens 3000
 ```
 
 ## Acknowledgement
-本项目是基于 [LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) 项目中的 LoRA 微调部分修改而来，在此表示感谢！
+本项目代码是基于 [LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) 项目中的 LoRA 微调部分修改而来，在此表示感谢！
 

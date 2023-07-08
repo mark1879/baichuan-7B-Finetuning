@@ -19,19 +19,17 @@ git lfs install
 git clone https://huggingface.co/baichuan-inc/baichuan-7B
 ```
 
-##### 3. 安装 python 库
+#### 3. 安装 python 库
 ```sh
 pip3 install -r requirements.txt
 ```
 
-##### 4. 硬件要求
-- 内存：建议 48GB 以上
-
-- 显存：
+#### 4. 硬件要求
+- 显存：>= 18G
 
 
 ## 微调
-#### 1. 准备数据
+### 1. 准备数据
 `data` 目录下存储了训练数据、测试数据，也可自行准备数据。数据格式如下：
 ```json
 [
@@ -48,9 +46,9 @@ pip3 install -r requirements.txt
 ]
 ```
 
-#### 2. Lora 微调
+### 2. Lora 微调
 
-##### 在微调模型上继续微调
+#### 在微调模型上继续微调
 
 微调过的模型放置在 `baichuan_lora_checkpoint` 文件夹中，可在该模型上继续 `Lora` 微调。 
 
@@ -77,13 +75,14 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --logging_steps 10 \
     --save_steps 1000 \
     --learning_rate 5e-5 \
-    --num_train_epochs 3.0 \
+    --num_train_epochs 10.0 \
     --plot_loss \
     --fp16  \
+    --dev_ratio 0.05 \
     --lora_target W_pack
 ```
 
-##### 直接在预训练模型上微调
+#### 直接在预训练模型上微调
 > `此步骤与上一步骤，可二选一`。
 
 - CUDA_VISIBLE_DEVICES=0：表示单卡训练
@@ -107,13 +106,14 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --logging_steps 10 \
     --save_steps 1000 \
     --learning_rate 5e-5 \
-    --num_train_epochs 3.0 \
+    --num_train_epochs 10.0 \
     --plot_loss \
     --fp16  \
+    --dev_ratio 0.05 \
     --lora_target W_pack
 ```
 
-##### 测试微调后的模型
+#### 测试微调后的模型
 
 - --model_name_or_path：预训练模型路径
 - --checkpoint_dir：微调模型路径
@@ -133,7 +133,7 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     
 ```
 
-##### 与大模型对话
+#### 与大模型对话
 
 - --model_name_or_path：预训练模型路径
 - --checkpoint_dir：微调模型路径
@@ -141,11 +141,14 @@ CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
 ```sh
 python src/cli_demo.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
-    --checkpoint_dir path_to_lora_checkpoint \
-    --max_new_tokens 2048
+    --checkpoint_dir baichuan_lora_checkpoint \
+    --max_new_tokens 1024
 ```
 
-##### 对话展示
+#### 对话展示
+<img width="1088" alt="C++对话1" src="https://github.com/mark1879/baichuan-7B-Finetuning/assets/53042205/38e462c6-e275-4078-93f1-176a747823cd">
+<img width="1089" alt="C++对话2" src="https://github.com/mark1879/baichuan-7B-Finetuning/assets/53042205/a00597e3-0f64-4638-b188-12bc41ca5787">
+
 
 ## Acknowledgement
 本项目是基于 [LLaMA-Efficient-Tuning](https://github.com/hiyouga/LLaMA-Efficient-Tuning) 项目中的 LoRA 微调部分修改而来，在此表示感谢！

@@ -12,7 +12,7 @@ class Template:
         if self.name == "default":
             self._register_template(
                 prefix="",
-                prompt="用户: {query}\nbaichuan-7B: ",
+                prompt="问: {query}\n答: ",
                 sep="\n",
                 use_history=True
             )

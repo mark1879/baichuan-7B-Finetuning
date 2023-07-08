@@ -1,0 +1,9 @@
+{
+  "lora_alpha": 32.0,
+  "lora_dropout": 0.1,
+  "lora_rank": 8,
+  "lora_target": [
+    "W_pack"
+  ],
+  "name_module_trainable": "mlp"
+}

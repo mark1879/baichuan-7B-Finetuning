@@ -226,15 +226,15 @@ class GeneratingArguments:
         metadata={"help": "Whether or not to use sampling, use greedy decoding otherwise."}
     )
     temperature: Optional[float] = field(
-        default=0.95,
+        default=0.5,
         metadata={"help": "The value used to modulate the next token probabilities."}
     )
     top_p: Optional[float] = field(
-        default=0.7,
+        default=0.5,
         metadata={"help": "The smallest set of most probable tokens with probabilities that add up to top_p or higher are kept."}
     )
     top_k: Optional[int] = field(
-        default=50,
+        default=30,
         metadata={"help": "The number of highest probability vocabulary tokens to keep for top-k filtering."}
     )
     num_beams: Optional[int] = field(
@@ -254,7 +254,7 @@ class GeneratingArguments:
         metadata={"help": "The parameter for repetition penalty. 1.0 means no penalty."}
     )
     length_penalty: Optional[float] = field(
-        default=1.0,
+        default=2.0,
         metadata={"help": "Exponential penalty to the length that is used with beam-based generation."}
     )
 

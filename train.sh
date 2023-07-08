@@ -1,18 +1,20 @@
 CUDA_VISIBLE_DEVICES=0 python src/finetune_lora.py \
     --model_name_or_path baichuan-inc/baichuan-7B \
     --do_train \
+    --dataset_dir data \
     --dataset cpp_interview_train \
     --max_source_length 256 \
     --max_target_length 3000 \
-    --output_dir path_to_lora_checkpoint \
+    --output_dir baichuan_lora_checkpoint \
     --overwrite_cache \
     --per_device_train_batch_size 1 \
     --gradient_accumulation_steps 1 \
     --lr_scheduler_type cosine \
     --logging_steps 10 \
-    --save_steps 100 \
+    --save_steps 1000 \
     --learning_rate 5e-5 \
-    --num_train_epochs 3.0 \
+    --num_train_epochs 10.0 \
     --plot_loss \
     --fp16  \
+    --dev_ratio 0.05 \
     --lora_target W_pack
